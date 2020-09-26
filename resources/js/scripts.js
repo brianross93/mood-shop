@@ -36,6 +36,11 @@ let cart = [ ];
 
 
 function addItem(name, price) {
+    for (let i=0;i<cart.length; i ++) {
+        if (cart[i].name === name) {
+            
+        }
+    }
     const item = {
         name: name, 
         price: price, 
@@ -47,6 +52,9 @@ function addItem(name, price) {
 function showItems() {
     console.log(`You have ${cart.length} items in your
     cart`)
+    for (let i=0; i < cart.length; i++) {
+        console.log(` ${cart[i].name} $${cart[i].price} x ${cart[i].qty}`)
+    }
 }
 
 addItem('Apple', 0.99)
