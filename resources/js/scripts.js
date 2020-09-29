@@ -1,4 +1,8 @@
 import data from './data.js'
+
+const itemList = document.getElementById('item-list')
+const qtyList = document.getElementById('cart-qty')
+const totalList = document.getElementById('cart-total')
 const itemsContainer = document.getElementById('items')
 
 for (let i=0; i<data.length; i++) {
@@ -52,12 +56,28 @@ function addItem(name, price) {
 //--------------------------------------------
 //Show the items
 function showItems() {
-    console.log(`You have ${getQty()} items in your cart`)
-    console.log(`Total price is: ${addPrice()} `)
-    for (let i=0; i < cart.length; i++) {
-        console.log(` ${cart[i].name} $${cart[i].price} x ${cart[i].qty}`)
+    
 
+
+    let qtyString = ''
+    let itemStr = ''
+    let totalStr = ''
+    
+    for (let i=0; i < cart.length; i++) {
+    
+        //{name: 'Apple', price: 0.99, qty: 3}
+        const {name, price, qty} = cart[i]
+
+        itemStr += `<li>${name} $${price} x ${qty} = ${qty * price} </li>`
+        
     }
+    qtyString += `<li>You have ${getQty()} items in your cart </li>`
+    totalStr += `<li>Total price is: ${addPrice()} </li>`
+    itemList.innerHTML = itemStr
+    qtyList.innerHTML = qtyString
+    totalList.innerHTML = totalStr
+
+
 }
 //-----------------------------------------
 // Adds the price for multiple items
@@ -111,3 +131,4 @@ removeItem('Apple', 1);
 showItems(); 
 removeItem('Frisbee',2);
 showItems();
+console.log(itemList)
