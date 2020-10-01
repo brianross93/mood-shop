@@ -46,15 +46,35 @@ all_items_button.forEach(elt => elt.addEventListener('click', () => {
 
 
 let cart = [ ];
+//----------------------
+// Handle Change events on input form
+itemList.onchange = function(e) {
+    if (e.target && e.target.classList.contains("update")) {
+        const name = e.target.dataset.name
+        const qty = parseInt(e.target.value)
+        updateCart(name, qty)
+
+        
+    }
+}
 
 //----------------------
 //Handle clicks on list
 itemList.onclick = function(e) {
     if (e.target && e.target.classList.contains('remove')) {
         const name = e.target.dataset.name // data-name="??"
-        removeItem(name, 1)
+        removeItem(name)
         showItems();
         
+    }
+    else if (e.target && e.target.classList.contains('add-one')) {
+        const name = e.target.dataset.name
+        addItem(name)
+
+    }
+    else if (e.target && e.target.classList.contains('remove-one')) {
+        const name = e.target.dataset.name
+        removeItem(name, 1)
     }
 }
 
@@ -97,7 +117,11 @@ function showItems() {
 
         itemStr += `<li>${name} $${price} x ${qty} = 
         ${qty * price}
-        <button class='remove' data-name="${name}"> Remove</button> </li>`
+        <button class='remove' data-name="${name}"> Remove</button> 
+        <button class='add-one' data-name="${name}"> +</button> 
+        <button class='remove-one' data-name="${name}"> -</button> 
+        <input class="update" type="number" min='0' data-name="${name}"</li>`
+
         
     }
     
@@ -144,7 +168,23 @@ function removeItem(name, qty =0) {
         }
     }
 }
-
+//--------------------------
+//Update Cart with Form Input
+function updateCart(name, qty) {
+    for (let i=0;i <cart.length; i++) {
+        
+        if (cart[i].name ===name) {
+            if (qty <1) {
+                removeItem(name)
+                return
+            }
+            cart[i].qty = qty
+            
+            showItems()
+            return
+        }
+    }
+}
 
 
 //---------------------------
