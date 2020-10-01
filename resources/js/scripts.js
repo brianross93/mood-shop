@@ -35,23 +35,50 @@ for (let i=0; i<data.length; i++) {
     itemsContainer.appendChild(newDiv)
     
 }
+const all_items_button = Array.from(document.querySelectorAll("button"))
+console.log(all_items_button, "---------")
+all_items_button.forEach(elt => elt.addEventListener('click', () => {
+    console.log('Here')
+    addItem(elt.getAttribute('id'), elt.getAttribute('data-price'))
+    showItems()
+}))
+  
+
 
 let cart = [ ];
 
+//----------------------
+//Handle clicks on list
+itemList.onclick = function(e) {
+    if (e.target && e.target.classList.contains('remove')) {
+        const name = e.target.dataset.name // data-name="??"
+        removeItem(name, 1)
+        showItems();
+        
+    }
+}
+
 //Add Item
 function addItem(name, price) {
+    console.log(cart)
     for (let i=0;i<cart.length; i ++) {
         if (cart[i].name === name) {
             cart[i].qty += 1
+            showItems();
             return
         }
     }
-    const item = {
-        name: name, 
-        price: price, 
+    // const item = {
+    //     name: name, 
+    //     price: price, 
+    //     qty: 1
+    // }
+    cart.push({
+        name, 
+        price, 
         qty: 1
-    }
-    cart.push(item)
+    })
+    showItems();
 }
 //--------------------------------------------
 //Show the items
@@ -68,16 +95,12 @@ function showItems() {
         //{name: 'Apple', price: 0.99, qty: 3}
         const {name, price, qty} = cart[i]
 
-        itemStr += `<li>${name} $${price} x ${qty} = ${qty * price} </li>`
+        itemStr += `<li>${name} $${price} x ${qty} = 
+        ${qty * price}
+        <button class='remove' data-name="${name}"> Remove</button> </li>`
         
     }
-    const all_items_button = Array.from(document.querySelectorAll("button"))
-    all_items_button.forEach(elt => elt.addEventListener('click', () => {
-        addItem(elt.getAttribute('id'), elt.getAttribute('data-price'))
-        showItems()
-      }))
-    console.log(all_items_button)
-
+    
     qtyString += `<li>You have ${getQty()} items in your cart </li>`
     totalStr += `<li>Total price is: ${addPrice()} </li>`
     itemList.innerHTML = itemStr
@@ -92,7 +115,7 @@ function addPrice() {
     
     let total_Price = 0
     for (let i=0; i < cart.length; i++) {
-        total_Price += (cart[i].price * cart[i].qty)
+        total_Price += parseFloat((cart[i].price * cart[i].qty))
     }   return total_Price.toFixed(2);
     
 }
@@ -101,7 +124,7 @@ function addPrice() {
 function getQty() {
     let qty = 0
     for (let i=0; i< cart.length; i++) {
-        qty += cart[i].qty
+        qty += parseFloat(cart[i].qty)
     }
     return qty;
 }
@@ -116,7 +139,7 @@ function removeItem(name, qty =0) {
             if (cart[i].qty < 1 || qty ===0) {
                 cart.splice(i, 1)
             }
-            
+            showItems()
             return
         }
     }
@@ -126,16 +149,16 @@ function removeItem(name, qty =0) {
 
 //---------------------------
 //Function calls here
-addItem('Apple', 0.99)
-addItem('Orange', 1.29)
-addItem('Apple', 0.99)
-addItem('Opinion', 0.02)
-addItem('Frisbee', 9.62)
-addItem('Frisbee', 9.62)
+// addItem('Apple', 0.99)
+// addItem('Orange', 1.29)
+// addItem('Apple', 0.99)
+// addItem('Opinion', 0.02)
+// addItem('Frisbee', 9.62)
+// addItem('Frisbee', 9.62)
 
-showItems();        
-removeItem('Apple', 1);
-showItems(); 
-removeItem('Frisbee',2);
-showItems();
-console.log(cart)
+// showItems();        
+// removeItem('Apple', 1);
+// showItems(); 
+// removeItem('Frisbee',2);
+// showItems();
+// console.log(cart)
